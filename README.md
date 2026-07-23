@@ -1,259 +1,231 @@
-# 📊 Persian Text Analysis with TF‑IDF, Word2Vec, and SVD
+# Persian Text Analysis using TF-IDF, Word2Vec, CountVectorizer and SVD
 
-> A comprehensive project for representing Persian sentences as numerical vectors using TF‑IDF, Word2Vec, and a custom CountVectorizer embedding, followed by dimensionality reduction with SVD and semantic similarity analysis.
+## Project Overview
 
----
+This project focuses on representing Persian text documents as numerical vectors using Natural Language Processing (NLP) techniques and analyzing their similarity using linear algebra methods.
 
-## 📌 Table of Contents
+The main goal is to transform Persian sentences into mathematical representations, apply dimensionality reduction using Singular Value Decomposition (SVD), and compare different text representation methods based on their ability to preserve semantic relationships.
 
-- [Project Overview](#project-overview)
-- [Objectives](#objectives)
-- [Dataset](#dataset)
-- [Project Structure](#project-structure)
-- [Installation & Requirements](#installation--requirements)
-- [How to Run](#how-to-run)
-- [Methods Explained](#methods-explained)
-- [Dimensionality Reduction with SVD](#dimensionality-reduction-with-svd)
-- [Similarity Calculation](#similarity-calculation)
-- [Evaluation Metrics](#evaluation-metrics)
-- [Visualizations](#visualizations)
-- [Sample Output](#sample-output)
-- [Results Interpretation](#results-interpretation)
-- [Educational Value](#educational-value)
-- [Future Improvements](#future-improvements)
-- [Author](#author)
-- [License](#license)
+The implemented methods are:
+
+1. **TF-IDF**
+   - Statistical text representation based on word importance.
+   
+2. **Word2Vec**
+   - Dense word embedding method using a simplified Skip-Gram neural model implemented with NumPy.
+   
+3. **CountVectorizer**
+   - Bag-of-Words representation based on word frequency.
+
+After generating the document matrices, Truncated SVD is applied for dimensionality reduction, and cosine similarity is calculated to measure similarity between sentences.
+
+This project was developed as part of the **Linear Algebra course** to demonstrate practical applications of matrix representation, singular value decomposition, and vector similarity in text processing.
+
 
 ---
 
-## 📖 Project Overview
+# Objectives
 
-This project applies **Natural Language Processing (NLP)** techniques to Persian (Farsi) text data. The goal is to convert a set of Persian sentences into numerical vectors using three different embedding methods, then reduce their dimensionality using **Singular Value Decomposition (SVD)**, and finally compute **cosine similarity** between sentences to measure semantic relatedness.
+The main objectives of this project are:
 
-The three embedding methods compared are:
-1. **TF‑IDF** (Term Frequency‑Inverse Document Frequency) – a classic statistical method.
-2. **Word2Vec** – a neural embedding model implemented from scratch with a simplified Skip‑Gram architecture.
-3. **CountVectorizer** – a simple bag‑of‑words count matrix (used as a "custom embedding").
+- Convert Persian text documents into numerical matrices.
+- Compare different text embedding approaches.
+- Apply Singular Value Decomposition (SVD) for dimensionality reduction.
+- Calculate semantic similarity between sentences.
+- Analyze which representation method provides better results.
+- Visualize high-dimensional text data.
+- Measure execution time of different processing steps.
 
-Each method is evaluated after SVD reduction, and the results are compared in terms of:
-- Matrix shape and sparsity
-- Explained variance
-- Similarity matrices
-- Execution time
-
-The project includes comprehensive visualizations: heatmaps, scatter plots, variance bar charts, and similarity histograms.
-
-This work was developed as part of a **Linear Algebra course** to demonstrate the practical application of matrix decomposition and dimensionality reduction in text analysis.
 
 ---
 
-## 🎯 Objectives
+# Dataset
 
-- ✅ Preprocess Persian text (normalization, punctuation removal).
-- ✅ Build document‑term matrices using **TF‑IDF**, **Word2Vec**, and **CountVectorizer**.
-- ✅ Reduce dimensionality using **Truncated SVD**.
-- ✅ Compute **cosine similarity** matrices for each method.
-- ✅ Compare the semantic similarity results across methods.
-- ✅ Visualize the results with heatmaps, scatter plots, variance charts, and histograms.
-- ✅ Benchmark execution time for each step.
-- ✅ Identify which embedding method best captures semantic meaning.
+The dataset consists of **40 Persian sentences** covering several semantic categories:
 
----
-
-## 📂 Dataset
-
-The dataset (`dataset.csv`) contains **40 Persian sentences** covering three main topics:
-
-| Topic | Example Sentences |
-| :--- | :--- |
-| **Artificial Intelligence & ML** | "هوش مصنوعی آینده فناوری را تغییر می‌دهد." |
-| **Sports** | "فوتبال محبوب‌ترین ورزش جهان است." |
-| **Health & Lifestyle** | "ورزش منظم خطر بیماری قلبی را کاهش می‌دهد." |
-| **Programming & Education** | "پایتون زبان محبوبی برای علم داده است." |
-
-The sentences are manually crafted to include clear semantic clusters, making it easy to evaluate the quality of similarity detection.
+- Artificial Intelligence and Machine Learning
+- Programming and Computer Science
+- Sports
+- Health and Lifestyle
+- Education and General Knowledge
 
 ---
 
-## 📁 Project Structure
+# Project Structure
 project4_text_analysis/
+
 │
-├── app.py # Main orchestration script
-├── config.py # Configuration constants
-├── dataset.csv # Input Persian sentences
-├── requirements.txt # Python dependencies
-├── README.md # This file
+├── app.py
+├── config.py
+├── dataset.csv
+├── requirements.txt
+├── README.md
 │
-├── methods/ # Embedding methods
-│ ├── tfidf_model.py # TF‑IDF vectorization
-│ ├── word2vec_model.py # Custom Word2Vec implementation
-│ ├── count_embedding.py # CountVectorizer embedding
-│ └── svd_reduction.py # Truncated SVD reduction
+├── methods/
+│ ├── tfidf_model.py
+│ ├── word2vec_model.py
+│ ├── count_embedding.py
+│ └── svd_reduction.py
 │
-├── utils/ # Utility functions
-│ ├── preprocessing.py # Text preprocessing
-│ ├── similarity.py # Cosine similarity calculation
-│ ├── report.py # Print top similar sentences
-│ └── benchmark.py # Execution time measurement
+├── utils/
+│ ├── preprocessing.py
+│ ├── similarity.py
+│ ├── report.py
+│ └── benchmark.py
 │
-├── visualization.py # Plotting functions
+├── visualization.py
 │
-└── outputs/ # Generated figures (per method)
+└── outputs/
+└── figures/
 ├── tfidf/
-│ ├── heatmap.png
-│ ├── svd_scatter.png
-│ ├── explained_variance.png
-│ └── similarity_histogram.png
 ├── word2vec/
-│ └── ...
 └── count_embedding/
-└── ...
+
+
 
 ---
 
-## ⚙️ Installation & Requirements
+# Installation
 
-### System Requirements
-- Python 3.10 or higher (recommended 3.12 for better library compatibility)
+## Requirements
 
-### Required Libraries
+- Python 3.10+
 
-| Library | Purpose |
-| :------ | :------ |
-| `numpy` | Numerical computations |
-| `pandas` | Data loading and manipulation |
-| `scikit-learn` | TF‑IDF, CountVectorizer, TruncatedSVD, cosine similarity |
-| `matplotlib` | Visualization |
-| `re` (built‑in) | Text preprocessing |
+Required libraries:
+
+| Library | Usage |
+|---|---|
+| NumPy | Numerical computation |
+| Pandas | Dataset handling |
+| Scikit-learn | TF-IDF, CountVectorizer, SVD, similarity |
+| Matplotlib | Visualization |
+
 
 ### Installation Steps
 
 ```bash
 pip install numpy pandas scikit-learn matplotlib
-or
-pip install -r requirements.txt
 
-## 🚀 How to Run
+🚀 How to Run
+bash
 python app.py
+After running, you will see:
 
+Console logs: dataset info, matrix shapes, explained variance, top similar sentences, and execution times.
+
+Figures saved in outputs/<method_name>/:
+
+heatmap.png – Cosine similarity heatmap
+
+svd_scatter.png – 2D projection after SVD
+
+explained_variance.png – Variance per component
+
+similarity_histogram.png – Distribution of similarity scores
 
 🛠️ Methods Explained
-
 1. TF‑IDF (Term Frequency – Inverse Document Frequency)
+What it does: Converts each sentence into a vector where each dimension corresponds to a unique word. The value is the TF‑IDF weight, which reflects how important a word is to a document relative to the entire corpus.
 
-- **What it does**: Converts each sentence into a vector where each dimension corresponds to a unique word. The value is the TF‑IDF weight, which reflects how important a word is to a document relative to the entire corpus.
-- **Advantages**: Simple, interpretable, captures word importance.
-- **Disadvantages**: Sparse, high‑dimensional, ignores word order and semantics.
-- **Implementation**: `TfidfVectorizer` from scikit‑learn.
+Advantages: Simple, interpretable, captures word importance.
+
+Disadvantages: Sparse, high‑dimensional, ignores word order and semantics.
+
+Implementation: TfidfVectorizer from scikit‑learn.
 
 2. Word2Vec (Custom Implementation)
+What it does: Learns dense vector representations (embeddings) for words from their context (Skip‑Gram model). Each sentence is represented as the average of its word vectors.
 
-- **What it does**: Learns dense vector representations (embeddings) for words from their context (Skip‑Gram model). Each sentence is represented as the average of its word vectors.
-- **Advantages**: Dense, captures semantic meaning and word relationships.
-- **Disadvantages**: Requires more data, training time, and careful tuning.
-- **Implementation**: A simplified Skip‑Gram model with gradient descent, written from scratch using NumPy.
-  - Vector size: 50
-  - Window size: 2
-  - Learning rate: 0.01
-  - Epochs: 100
+Advantages: Dense, captures semantic meaning and word relationships.
+
+Disadvantages: Requires more data, training time, and careful tuning.
+
+Implementation: A simplified Skip‑Gram model with gradient descent, written from scratch using NumPy.
+
+Vector size: 50
+
+Window size: 2
+
+Learning rate: 0.01
+
+Epochs: 100
 
 3. CountVectorizer (Custom Embedding)
+What it does: Creates a simple bag‑of‑words count matrix (raw term frequencies).
 
-- **What it does**: Creates a simple bag‑of‑words count matrix (raw term frequencies).
-- **Advantages**: Simple and fast.
-- **Disadvantages**: Sparse, no normalization, affected by document length.
-- **Implementation**: `CountVectorizer` from scikit‑learn (used as a "dummy" embedding for comparison).
+Advantages: Simple and fast.
 
----
+Disadvantages: Sparse, no normalization, affected by document length.
+
+Implementation: CountVectorizer from scikit‑learn (used as a "dummy" embedding for comparison).
 
 📉 Dimensionality Reduction with SVD
-
 Why SVD?
-- The original TF‑IDF and CountVectorizer matrices are high‑dimensional and sparse.
-- SVD (specifically **Truncated SVD**) reduces dimensions to a specified number of components (default: 10), capturing the most important latent features.
-- For Word2Vec, the matrix is already dense, but SVD can still help reduce noise and visualize the data in 2D.
+The original TF‑IDF and CountVectorizer matrices are high‑dimensional and sparse.
+
+SVD (specifically Truncated SVD) reduces dimensions to a specified number of components (default: 10), capturing the most important latent features.
+
+For Word2Vec, the matrix is already dense, but SVD can still help reduce noise and visualize the data in 2D.
 
 Implementation
-- Using `TruncatedSVD` from scikit‑learn with `n_components = 10` (configurable in `config.py`).
-- The explained variance ratio is computed to measure how much information is retained.
+Using TruncatedSVD from scikit‑learn with n_components = 10 (configurable in config.py).
 
----
+The explained variance ratio is computed to measure how much information is retained.
 
 📐 Similarity Calculation
+Cosine similarity measures the angle between two vectors.
 
-- **Cosine similarity** measures the angle between two vectors.
-- Range: `-1` (opposite) to `1` (identical), but in text analysis, values are usually between 0 and 1.
-- A high similarity score indicates that two sentences are semantically close.
+Range: -1 (opposite) to 1 (identical), but in text analysis, values are usually between 0 and 1.
 
-The similarity matrix is computed using `cosine_similarity` from scikit‑learn.
+A high similarity score indicates that two sentences are semantically close.
 
----
+The similarity matrix is computed using cosine_similarity from scikit‑learn.
 
 📊 Evaluation Metrics
-
-| Metric | Description |
-| :--- | :--- |
-| **Matrix Shape** | Number of documents × number of features (or components). |
-| **Vocabulary Size** | Number of unique words in the corpus. |
-| **Explained Variance** | Proportion of variance retained by each SVD component. |
-| **Total Explained Variance** | Sum of variance ratios for all components. |
-| **Execution Time** | Time taken for vectorization, SVD, and similarity calculation. |
-| **Top Similar Sentences** | For each sentence, the most similar other sentences with scores above a threshold. |
-
----
+Metric	Description
+Matrix Shape	Number of documents × number of features (or components).
+Vocabulary Size	Number of unique words in the corpus.
+Explained Variance	Proportion of variance retained by each SVD component.
+Total Explained Variance	Sum of variance ratios for all components.
+Execution Time	Time taken for vectorization, SVD, and similarity calculation.
+Top Similar Sentences	For each sentence, the most similar other sentences with scores above a threshold.
 
 🎨 Visualizations
-
-All figures are automatically saved in `outputs/<method_name>/`.
+All figures are automatically saved in outputs/<method_name>/.
 
 1. Similarity Heatmap
-- Shows the pairwise cosine similarity matrix as a color‑coded grid.
-- Darker colors indicate higher similarity.
-- Helps identify clusters of related sentences.
+Shows the pairwise cosine similarity matrix as a color‑coded grid.
+
+Darker colors indicate higher similarity.
+
+Helps identify clusters of related sentences.
 
 2. 2D Scatter Plot (After SVD)
-- Projects the reduced document vectors onto the first two principal components.
-- Visually reveals clusters of similar sentences.
+Projects the reduced document vectors onto the first two principal components.
+
+Visually reveals clusters of similar sentences.
 
 3. Explained Variance Bar Chart
-- Displays the variance captured by each SVD component.
-- The first few components usually capture most of the variance.
+Displays the variance captured by each SVD component.
+
+The first few components usually capture most of the variance.
 
 4. Similarity Histogram
-- Distribution of all pairwise similarity values.
-- A right‑skewed distribution indicates that most sentences are moderately similar; a wide spread suggests good differentiation.
+Distribution of all pairwise similarity values.
 
----
+A right‑skewed distribution indicates that most sentences are moderately similar; a wide spread suggests good differentiation.
 
-🎓 Educational Value
+🚧 Future Improvements
+Add Persian NLP preprocessing – use libraries like hazm for tokenization, stemming, and stop‑word removal.
 
-This project demonstrates the practical application of several core linear algebra and NLP concepts:
+Use pre‑trained Word2Vec/FastText models for Persian (e.g., from gensim).
 
-| Concept | Application |
-| :------ | :----------- |
-| **Matrix Representation** | Document‑term matrices |
-| **Dimensionality Reduction** | Truncated SVD for noise reduction and visualization |
-| **Singular Value Decomposition** | Latent semantic analysis |
-| **Cosine Similarity** | Measuring semantic relatedness |
-| **Word Embeddings** | Dense semantic vectors (Word2Vec) |
-| **Bag‑of‑Words** | TF‑IDF and CountVectorizer |
-| **Benchmarking** | Time complexity analysis |
-| **Visualization** | Interpreting high‑dimensional data |
+Support larger datasets (e.g., news articles, social media posts).
 
----
+Add a Streamlit dashboard for interactive exploration.
 
-👩‍💻 Author
+Compare with transformer‑based embeddings (e.g., ParsBERT, multilingual BERT).
 
-**Minoo Namdar**  
-Bachelor of Computer Engineering  
-Linear Algebra Course Project  
-Professor: Dr. Abasszadeh  
-Year: 2026
+Cluster sentences using K‑means or hierarchical clustering.
 
----
-
-📄 License
-
-This project is created for educational purposes and is free to use, modify, and distribute for non‑commercial academic work.
-
----
+Add a query‑by‑example feature – input a new sentence and find the most similar existing one.
